@@ -11,4 +11,12 @@ The workflow of this project is that:
 
 1. build the Virtual Environment：`conda create -n kg python=3.6`
 2. install necessary packages: `pip install -r requirement.txt`
-3. 
+
+## Extract corpora from tweets and reddit tables using keyword
+
+```python
+python extract_corpora.py -k iPhone -l 10
+```
+
+- `-k`: keyword
+- `-l`: limit, limit the number of output in the sql query.
