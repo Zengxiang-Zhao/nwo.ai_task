@@ -2,6 +2,7 @@ from google.cloud import bigquery
 from google.oauth2 import service_account
 import pandas as pd
 from optparse import OptionParser
+import json
 
 # connect to the database
 credentials = service_account.Credentials.from_service_account_file(
@@ -59,7 +60,18 @@ if __name__ == "__main__":
                          help='limit the number of output in corpora',
                          default=None,
                          type='int')
+    optparser.add_option('-f', '--filePath',
+                         dest='filePath',
+                         help='store the result to a json file',
+                         default=None)
     (options, args) = optparser.parse_args()
 
     corpora = corpora(options.keyword, options.limit)
     print(corpora)
+
+    if options.filePath:
+        with open(options.filePath, 'w') as f:
+            json.dump(list(corpora),f)
+
+        print('*'*20)
+        print(f'The result has been saved in file:{options.filePath}')
