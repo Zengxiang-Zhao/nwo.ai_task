@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-
 from nltk import pos_tag
 from nltk import  word_tokenize
 from optparse import OptionParser
@@ -13,12 +12,38 @@ import re
 
 lemmatizer = WordNetLemmatizer()
 nlp = spacy.load('en_core_web_sm')
-all_stop_words = ['many', 'us', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday',
-                  'today', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august',
-                  'september', 'october', 'november', 'december', 'today', 'old', 'new']
-all_stop_words = set(all_stop_words + list(stopwords.words('english')))
 
-def extract_entities(docs):
+def combine_nouns(tags):
+    """
+    tags: pos_tag of NLTK
+    rtype:
+        list of nouns
+    """
+    ents = [(lemmatizer.lemmatize(w),i) for i, (w,t) in enumerate(tags) if t.startswith('NN')] # extract nouns
+
+    n = len(ents)
+    if n == 0:
+        return []
+    elif n == 1:
+        return [ents[0][0]]
+
+    # screen the nuons and connect the nouns next to each other together
+    right = 1
+    res = [] # store the nouns
+    sub = ents[0][0]
+    while right < n:
+        if ents[right][1] == ents[right-1][1]+1:
+            sub += ' '+ ents[right][0]
+        else:
+            res.append(sub)
+            sub = ents[right][0]
+
+        right += 1
+
+    res.append(sub)
+    return res
+
+def extract_entities_nltk(docs):
     """
     docs: iteration of strings
     rtype: list of list of entities
@@ -28,9 +53,9 @@ def extract_entities(docs):
         d = re.sub(r'http\S+', '', d) # remove link
         d = re.sub(r'@\S+','',d) # remove @ stuff
         tags = pos_tag(word_tokenize(d)) # get pos tag of each word
-        ents = [w for w,t in tags if t.startswith('NN')] # get the entities
-        ents = [lemmatizer.lemmatize(w) for w in ents] # lemmatization
-        ents = [w for w in ents if w.lower() not in all_stop_words] # get rid of stop words
+        
+        ents = combine_nouns(tags)
+        
         ents = list(set(ents))
         if len(ents) > 1:
             res.append(ents)
@@ -53,7 +78,7 @@ if __name__ == "__main__":
     with open(options.filePath,'r') as f:
         corpora = json.load(f)
 
-    res = extract_entities(corpora)
+    res = extract_entities_nltk(corpora)
     print(res)
 
     if options.savePath:
