@@ -3,12 +3,12 @@ This project is about NWO.AI company task: Semantic Search Algorithm.
 
 The workflow of this project is that:
 
-1. extract corpora from tweets and reddit tables associated with keyword **within a range of time**
+1. extract corpora from tweets and reddit tables associated with keyword **within a range of time**. Cause all the trends are associated with a range of time.
 2. process the corpora and extract enities
-3. implement FP-tree algorithm to get the entities associated with the keyword
+3. count the frequency of each entities and decide which one have a strong relationship with the keyword based on the freqency.
 
 
-## Extract corpora from tweets and reddit tables using keyword between a range of time
+## Extract corpora from tweets and reddit tables using keyword between a range of time 
 
 ```python
 python extract_corpora.py -k iPhone -l 10
@@ -38,7 +38,21 @@ TODO:
 
 ## Get the associated entities
 
-At this step I just count the frequency of each entity from the above part. Then return the entities based on frequency in decending order.
+At this step I just count the frequency of each entity from the above part. Then entities will be returned based on frequency in decending order.
+
+When the keyword is set to 'Biden' and date is set from [2021,1,1]
+ to [2021,10,1] and using the default minSupRatio 0.1. The trend entities are ['Trump', 'election'].
+
+ ```python
+keyword = 'Biden'
+date1 = [2021,1,1]
+date2 = [2021,10,1]
+
+trend = association(keyword,date1,date2)
+#ouptput ['Trump', 'election']
+ ```
+
+
 
 
 
