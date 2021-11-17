@@ -22,7 +22,7 @@ TODO:
 ## Process the corpora using NLTK or Stanza
 
 ```python
-python process_text.py -f text_file.json -s entities.json
+python process_text_nltk.py -f text_file.json -s entities.json
 ```
 
 - `-f`: JSON file containing corpora data
