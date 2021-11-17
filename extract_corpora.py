@@ -26,8 +26,8 @@ def corpora(keyword,date1,date2,limit):
     utc_timestamp1 = dt_date1.replace(tzinfo=timezone.utc).timestamp()
     utc_timestamp2 = dt_date2.replace(tzinfo=timezone.utc).timestamp()
 
-    tweet_timestamp1 = f'{date1[0]}/{date1[1]}/{date1[2]}'
-    tweet_timestamp2 = f'{date2[0]}/{date2[1]}/{date2[2]}'
+    tweet_timestamp1 = f'{date1[0]}-{date1[1]}-{date1[2]}'
+    tweet_timestamp2 = f'{date2[0]}-{date2[1]}-{date2[2]}'
 
     query_reddit_all_corpora = f"""
         SELECT body as corpora FROM graph.reddit
@@ -57,6 +57,9 @@ def corpora(keyword,date1,date2,limit):
         )
 
     keyword_corpora = pd.concat([reddit_all_corpora,tweet_all_corpora])
+    if len(keyword_corpora) == 0:
+        print(f'Can not find any information associated with {keyword}')
+        return None
 
     return keyword_corpora['corpora'].values
 

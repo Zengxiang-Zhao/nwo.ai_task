@@ -19,7 +19,7 @@ def combine_nouns(tags):
     rtype:
         list of nouns
     """
-    ents = [(lemmatizer.lemmatize(w),i) for i, (w,t) in enumerate(tags) if t.startswith('NN')] # extract nouns
+    ents = [(lemmatizer.lemmatize(w.strip().lower()),i) for i, (w,t) in enumerate(tags) if t.startswith('NN')] # extract nouns
 
     n = len(ents)
     if n == 0:
