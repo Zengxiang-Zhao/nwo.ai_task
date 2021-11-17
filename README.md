@@ -39,7 +39,7 @@ TODO:
 
 At this step, I chose two periods of time and compare the difference of TF-IDF of each entity. Then entities will be returned based on TF-IDF difference in descending order.
 
-When the keyword is set to 'Jeff Bezos' and the date is set from [2021,1,1]
+When the keyword is set to 'Jeff Bezos' and the date is set from [2020,1,1]
  to [2021,1,1]. The top 10  trend entities are shown below:
 
  ```python
