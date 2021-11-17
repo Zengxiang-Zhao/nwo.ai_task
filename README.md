@@ -42,7 +42,8 @@ At this step, I chose two periods of time and compare the difference of TF-IDF o
 When the keyword is set to 'Jeff Bezos' and the date is set from [2020,1,1]
  to [2021,1,1]. The top 10  trend entities are shown below:
 
- ```python
+
+```python
 [('money', 0.0050692567642110185),
  ('world', 0.0033733516327722583),
  ('country', 0.002260528930074821),
@@ -54,3 +55,18 @@ When the keyword is set to 'Jeff Bezos' and the date is set from [2020,1,1]
  ('business', 0.0016910307208879054),
  ('amount', 0.0016395234455241236)]
  ```
+
+ When the keyword is replaced with Elon Musk, the top 10 trend entities are shown below:
+
+```python
+[('world', 0.004012439321649297),
+ ('post report', 0.0034510556262611018),
+ ('reddits report page', 0.003428351312930437),
+ ('watch scam', 0.003428351312930437),
+ ('spam account', 0.003428351312930437),
+ ('product', 0.00320712047703086),
+ ('money', 0.0028856198580288423),
+ ('user', 0.002809009256076562),
+ ('mod', 0.0026337003463571566),
+ ('spam', 0.0024520658397118355)]
+```
