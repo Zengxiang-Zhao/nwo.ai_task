@@ -16,11 +16,16 @@ import re
 # nlp = stanza.Pipeline('en',processors='tokenize,pos,lemma') # initialize English neural pipeline
 
 def connect_entities(doc):
-    """
-    if the NN word next to each other, then we combine them together
-    doc: document style , such as doc = nlp(p)
-    rtype:
-        list of nouns
+    """ Connect the nouns next to each other as a combined noun
+    Parameters
+    ---------
+    doc : document style
+        Such as doc = nlp(p)
+    Returns
+    ---------
+    ans : [nouns]
+        A list of nouns
+
     """
     list_tokens = [] # convert to dictionary
     for sub_list in doc.to_dict():
@@ -55,9 +60,16 @@ def connect_entities(doc):
 
 
 def extract_entities_stanza(docs):
-    """
-    docs: iteration of strings
-    rtype: list of list of entities
+    """ Using stanza to extract entities from documents
+    Parameters
+    ---------
+    doc : [strings]
+        A list of strings extracted from database
+    Returns
+    ---------
+    res : [[entities]]
+        A list of list of entities
+
     """
     nlp = stanza.Pipeline('en',processors='tokenize,pos,lemma') # initialize English neural pipeline
 

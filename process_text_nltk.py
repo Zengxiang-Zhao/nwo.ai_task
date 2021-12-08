@@ -14,10 +14,21 @@ lemmatizer = WordNetLemmatizer()
 nlp = spacy.load('en_core_web_sm')
 
 def combine_nouns(tags):
-    """
-    tags: pos_tag of NLTK
-    rtype:
-        list of nouns
+    """screen the nuons and connect the nouns next to each other together
+    Parameters
+    ---------
+    tags: [pos_tag]
+        List of pos_tag of NLTK
+    Returns
+    ---------
+    res : [entities]
+        List of nouns
+
+    Process
+    ---------
+    1. Extract the tags starting with 'NN'
+    2. Lemmatize the tags
+    3. construct the nouns next to each other as a combined noun
     """
     ents = [(lemmatizer.lemmatize(w.strip().lower()),i) for i, (w,t) in enumerate(tags) if t.startswith('NN')] # extract nouns
 
@@ -44,9 +55,16 @@ def combine_nouns(tags):
     return res
 
 def extract_entities_nltk(docs):
-    """
-    docs: iteration of strings
-    rtype: list of list of entities
+    """ Using NLTK to extract entities from documents
+    Parameters
+    ---------
+    docs : [strings]
+        A list of strings extracted from database
+    Returns
+    ---------
+    res : [entities]
+        A list of entities
+
     """
     res  = []
     for d in docs:

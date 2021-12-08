@@ -7,6 +7,23 @@ from sklearn.feature_extraction.text import TfidfTransformer
 idf = TfidfTransformer()
 
 def get_corporas(keyword,date1,date2):
+    """Extract the documents from the database between date1 and date2. 
+    Then repeat the process decrease the year by 1.
+
+    Parameters
+    ---------
+    keyword : string
+        The keyword you are interested in
+    date1 : (int,int,int)
+    date2 : (int,int,int)
+        A tuple of integers like (year,month,day)
+
+    Returns
+    ---------
+    res : [[enities],[entities]]
+        A list of list of entities
+
+    """
     docs_2 = corpora(keyword,date1,date2,None)
     year_add = date2[0] - date1[0]
     if year_add == 0:
@@ -18,20 +35,30 @@ def get_corporas(keyword,date1,date2):
     entities_1 = extract_entities_nltk(docs_1)
     entities_2 = extract_entities_nltk(docs_2)
 
-    return [entities_1,entities_2]
+    res = [entities_1,entities_2]
+    return res
 
 def compute_tf_idf(keyword,docs,limit=10):
-    """
-    Args:
-        docs: list of list of list of entites, len(docs) = 2
-        limit : int , remove the entites which the frequency is smaller than limit
-       
-    rtype:
-        list of tuple(entity,score)
-    
+    """Compute the tf-idf factor of entities in the docs
+    Parameters
+    ---------
+    keyword : string
+    docs : [[entities],[entities]]
+        A list of list of entities. Compute the tf-idf based on these two list of entities.
+    limit : int
+        The number of entities you want to show in the result. The default value is 10
+    Returns
+    ---------
+    ans : [(entity,score),(entity,score),...]
+        A list of tuples like (entity,score)
+
+
+    Process
+    ---------
     step-1: get the set of entities in the docs
     step-2: use defaultdict to count the frequency of each entity
     step-3: built matrix
+    step-4: compute tf-idf
     """
     dic = defaultdict(lambda : defaultdict(int))
 
@@ -89,17 +116,27 @@ def compute_tf_idf(keyword,docs,limit=10):
     return ans
 
 def extract_trends(keyword,date1,date2, limit=10):
-    """
-    Args:
-        docs: list of list of list of entites, len(docs) = 2
-        limit : int , remove the entites which the frequency is smaller than limit
-       
-    rtype:
-        list of tuple(entity,score)
+    """Extract trends from the database between date1 and date2 based on the keyword 
+    with a limit number of entities
+
+    Parameters
+    ---------
+    keyword : string
+        The keyword you are interested in
+    date1 : (int,int,int)
+    date2 : (int,int,int)
+        A tuple of integers like (year,month,day)
+    limit : int
+        Remove the entites that the frequency is smaller than limit. The default value is 10.
+
+    Returns
+    ---------
+    trends : [(entity, score),...]
+        A list of tupes like (entity, score)
     
-    step-1: get the set of entities in the docs
-    step-2: use defaultdict to count the frequency of each entity
-    step-3: built matrix
+    Notes
+    ---------
+    This function just combine get_corporas and compute_tf_idf together
     """
     docs = get_corporas(keyword,date1,date2)
 

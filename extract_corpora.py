@@ -12,17 +12,29 @@ project_id = "nwo-sample"
 client = bigquery.Client(credentials= credentials,project=project_id)
 
 def corpora(keyword,date1,date2,limit):
-    """
-    extract corpora from graph.tweets and graph.reddit associated with keyword
-    args:
-        keyword: string
-        date1,date2: tuple of intergers like (year,month,day)
-        limit: int or None
-    rtype:
-        list of strings
+    """extract corpora from graph.tweets and graph.reddit associated with keyword
+    Parameters
+    ---------
+    keyword : str
+        The keyword you want to search in the Database
+    date1 : (int,int,int)
+    date2 : (int,int,int)
+        A tuple of integers like (year,month,day)
+    limit : int or None
+        The rows you want to extract from graph.tweets and graph.reddit respectively 
+        when defining the limit as an number.
+        Extract all the rows satisfying the criteria when the limit is None
+
+    Returns
+    ---------
+    res : [strings] or None
+        If there are some rows that satisfy the creteria then return a list of strings. Otherwise return None.
+
     """
     dt_date1 = datetime(date1[0],date1[1],date1[2])
     dt_date2 = datetime(date2[0],date2[1],date2[2])
+
+    # convert utc time to datetime
     utc_timestamp1 = dt_date1.replace(tzinfo=timezone.utc).timestamp()
     utc_timestamp2 = dt_date2.replace(tzinfo=timezone.utc).timestamp()
 
@@ -61,7 +73,8 @@ def corpora(keyword,date1,date2,limit):
         print(f'Can not find any information associated with {keyword}')
         return None
 
-    return keyword_corpora['corpora'].values
+    res = keyword_corpora['corpora'].values
+    return res
 
 
 if __name__ == "__main__":
